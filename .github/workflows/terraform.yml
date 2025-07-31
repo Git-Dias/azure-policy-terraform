@@ -1,4 +1,4 @@
-name: Terraform Azure Policy
+name: Terraform Apply Azure Policy
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform Apply'
+    name: 'Apply Built-in Azure Policy'
     runs-on: ubuntu-latest
 
     steps:
@@ -19,10 +19,10 @@ jobs:
         with:
           terraform_version: 1.6.0
 
-      - name: Azure Login
+      - name: Login no Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZ_CREDENTIALS }}
 
       - name: Terraform Init
         run: terraform init
