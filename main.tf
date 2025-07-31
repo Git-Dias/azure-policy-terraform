@@ -1,14 +1,9 @@
-resource "azurerm_policy_definition" "deny_public_ip" {
-  name         = "deny-public-ip"
-  policy_type  = "Custom"
-  mode         = "All"
-  display_name = "Deny Public IPs"
-  policy_rule  = file("${path.module}/policies/deny-public-ip.json")
+resource "azurerm_policy_assignment" "api_management" {
+  name                 = "API Management APIs should use only encrypted protocols"
+  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/ee7495e7-3ba7-40b6-bfee-c29e22cc75d4"
+  scope                = var.scope
+  display_name         = "API Management APIs should use only encrypted protocols"
+  description          = "To ensure security of data in transit, APIs should be available only through encrypted protocols, like HTTPS or WSS. Avoid using unsecured protocols, such as HTTP or WS."
 }
 
-resource "azurerm_policy_assignment" "deny_public_ip_assignment" {
-  name                 = "deny-public-ip-assignment"
-  policy_definition_id = azurerm_policy_definition.deny_public_ip.id
-  scope                = var.scope
-}
 
