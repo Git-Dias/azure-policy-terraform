@@ -12,6 +12,3 @@ variable "definition" {
   description = "ID da Definition"
   type        = string
 }
-
-
-
