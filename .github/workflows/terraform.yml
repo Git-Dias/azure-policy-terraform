@@ -1,17 +1,14 @@
-name: Terraform - Policy Plan and Apply
+name: Terraform Apply Azure Policy
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   terraform:
+    name: 'Apply Built-in Azure Policy'
     runs-on: ubuntu-latest
-    environment:
-      name: policy-approval
-      # aplica só após aprovação
 
     steps:
       - name: Checkout código
@@ -25,23 +22,13 @@ jobs:
       - name: Login no Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.AZ_CREDENTIALS }}
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
-        id: tfplan
-        run: |
-          terraform plan -no-color > tfplan.txt
-          cat tfplan.txt
-
-      - name: Comentar Plan no Pull Request
-        if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          path: tfplan.txt
+        run: terraform plan -var-file="terraform.tfvars"
 
       - name: Terraform Apply
-        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.review.state == 'approved')
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
