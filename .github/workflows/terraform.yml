@@ -19,16 +19,26 @@ jobs:
         with:
           terraform_version: 1.6.0
 
-      - name: Login no Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZ_CREDENTIALS }}
-
       - name: Terraform Init
         run: terraform init
+        env:
+          clientId: ${{ secrets.clientId }}
+          clientSecret: ${{ secrets.clientSecret }}
+          tenantId: ${{ secrets.tenantId }}
+          subscriptionId: ${{ secrets.subscriptionId }}
 
       - name: Terraform Plan
         run: terraform plan -var-file="terraform.tfvars"
+        env:
+          clientId: ${{ secrets.clientId }}
+          clientSecret: ${{ secrets.clientSecret }}
+          tenantId: ${{ secrets.tenantId }}
+          subscriptionId: ${{ secrets.subscriptionId }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
+        env:
+          clientId: ${{ secrets.clientId }}
+          clientSecret: ${{ secrets.clientSecret }}
+          tenantId: ${{ secrets.tenantId }}
+          subscriptionId: ${{ secrets.subscriptionId }}
