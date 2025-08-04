@@ -3,3 +3,15 @@ variable "scope" {
   type        = string
 }
 
+variable "policy" {
+  description = "Policy a ser aplicada"
+  type        = string
+}
+
+variable "definition" {
+  description = "ID da Definition"
+  type        = string
+}
+
+
+
